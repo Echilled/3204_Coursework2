@@ -10,7 +10,7 @@ def readlogFile(file):
 
 
 def main():
-    dataframe = readlogFile('T1595ActiveScanning_logs/T1595_PacketbeatTraffic_clean_Gp14_EugeneChew.csv')
+    dataframe = readlogFile('../T1595ActiveScanning_logs/T1595_PacketbeatTraffic_clean_Gp14_EugeneChew.csv')
     print(dataframe)
 
 
