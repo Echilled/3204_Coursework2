@@ -21,11 +21,12 @@ def main():
     dataframe = readlogFile('tailored_logs/T1595_PacketbeatTraffic_clean_Gp14_EugeneChew.csv')
     format_columns_preprocessing(dataframe)
 
-    # Standardize variables using scaling #
+    # Standardize variables using scaling
     scaler = StandardScaler()
     scaler.fit(dataframe.drop('Binary', axis=1))
     # scaled_features = scaler.transform(dataframe.drop('Binary', axis=1))
 
+    print('done')
 
 if __name__ == "__main__":
     main()
