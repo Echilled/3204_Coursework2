@@ -7,7 +7,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
-import numpy as p
+from KNN import optimal_k
 
 
 def readlogFile(file):
@@ -27,9 +27,14 @@ def knn_algo(X_train, X_test, y_train, y_test):
     pred = knn.predict(X_test)
     return pred
 
+
 def main():
     dataframe = readlogFile('tailored_logs/T1595_PacketbeatTraffic_clean_Gp14_EugeneChew.csv')
     format_columns_preprocessing(dataframe)
+
+    # dataframe = dataframe.replace('?', '0')
+    # dataframe.columns = [col[1:-1] for col in dataframe.columns]
+
 
     # Standardize variables using scaling
     scaler = StandardScaler()
@@ -38,12 +43,12 @@ def main():
 
     # Training of test split data, testing size is 30 percent
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Binary'], test_size=0.30)
-
-    prediction = knn_algo( X_train, X_test, y_train, y_test)
+    prediction = knn_algo(X_train, X_test, y_train, y_test)
+    optimal_k.get_optimal_k_value(X_train, X_test, y_train, y_test)
 
     # Evaluate model
-    print(confusion_matrix(y_test, prediction))
-    print(classification_report(y_test, prediction))
+    # print(confusion_matrix(y_test, prediction))
+    # print(classification_report(y_test, prediction))
 
 
 if __name__ == "__main__":
