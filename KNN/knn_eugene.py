@@ -18,7 +18,8 @@ def readlogFile(file):
 def format_columns_preprocessing(dataframe):
     le = preprocessing.LabelEncoder()
     for column in dataframe.columns:
-        dataframe[column] = le.fit_transform(dataframe[column])
+        if column != 'Technique':
+            dataframe[column] = le.fit_transform(dataframe[column])
 
 
 def knn_algo(X_train, X_test, y_train, y_test):
@@ -34,11 +35,11 @@ def main():
 
     # Standardize variables using scaling
     scaler = StandardScaler()
-    scaler.fit(dataframe.drop('Binary', axis=1))
-    scaled_features = scaler.transform(dataframe.drop('Binary', axis=1))
+    scaler.fit(dataframe.drop('Technique', axis=1))
+    scaled_features = scaler.transform(dataframe.drop('Technique', axis=1))
 
     # Training of test split data, testing size is 30 percent
-    X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Binary'], test_size=0.30)
+    X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, y_test)
     # optimal_k.get_optimal_k_value(X_train, X_test, y_train, y_test)
     # Evaluate model
