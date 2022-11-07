@@ -31,7 +31,6 @@ sc_x = StandardScaler()
 x_train = sc_x.fit_transform(x_train)
 x_test = sc_x.transform(x_test)
 
-# x_plot = np.arange(1, int(math.sqrt(len(y_test)))+1).tolist()
 x_plot = np.arange(1, int(math.sqrt(len(y_test)))+1).tolist()
 y_plot = []
 
