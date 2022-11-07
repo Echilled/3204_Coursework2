@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsClassifier
 
 from sklearn.metrics import precision_score
@@ -12,18 +11,22 @@ from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import classification_report
 
 import math
-# Data processing
-df = pd.read_csv("conbined_t1595_t1046.csv")
+# Importing data to a pandas DataFrame
+df = pd.read_csv("conbined_t1595_t1046.csv", thousands=',')
 
 
-le = LabelEncoder()
+df['destination.port'] = df['destination.port'].astype('object')
+df['source.port'] = df['source.port'].astype('object')
+df['event.duration'] = df['event.duration'].astype(np.float64)
 
-for column in df.columns:
-    df[column] = le.fit_transform(df[column])
-    
+df = df.select_dtypes(include=np.number)
 
-x = df.iloc[:, 1:26]
-y = df.iloc[:, 26]
+print(df.columns)
+
+x = df.iloc[:, 1:8]
+y = df.iloc[:, 8]
+
+df.to_csv("unused columns removed.csv")
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=0, test_size=0.3)
 sc_x = StandardScaler()
