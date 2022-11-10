@@ -4,7 +4,7 @@ import numpy as np
 from KNN import knn_eugene
 
 
-def get_optimal_k_value(X_train, X_test, y_train, y_test):
+def optimal_k_plot(X_train, X_test, y_train, y_test):
     error_rate = []
     for i in range(1, 20):
         knn = KNeighborsClassifier(n_neighbors=i)
