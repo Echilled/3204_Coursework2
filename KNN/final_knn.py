@@ -41,7 +41,7 @@ def f1_plot(x_train, x_test, y_train, y_test):
         classifier = KNeighborsClassifier(n_neighbors=i + 1)
         classifier.fit(x_train, y_train)
         y_pred = classifier.predict(x_test)
-        y_plot.append(f1_score(y_test, y_pred, pos_label='T1595'))
+        y_plot.append(f1_score(y_test, y_pred, average='micro'))
     plt.plot(x_plot, y_plot)
     plt.grid()
     plt.show()
@@ -59,8 +59,8 @@ def main():
     # Training of test split data, testing size is 30 percent
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, y_test)
-    # optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
-    # f1_plot(X_train, X_test, y_train, y_test)
+    optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
+    f1_plot(X_train, X_test, y_train, y_test)
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
     print(classification_report(y_test, prediction))
