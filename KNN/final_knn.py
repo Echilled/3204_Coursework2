@@ -48,7 +48,7 @@ def f1_plot(x_train, x_test, y_train, y_test):
 
 
 def main():
-    dataframe = readlogFile("tailored_logs/conbined_t1595_t1046.csv")
+    dataframe = readlogFile("tailored_logs/T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
     format_columns_preprocessing(dataframe)
 
     # Standardize variables using scaling
@@ -59,8 +59,8 @@ def main():
     # Training of test split data, testing size is 30 percent
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, y_test)
-    optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
-    f1_plot(X_train, X_test, y_train, y_test)
+    # optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
+    # f1_plot(X_train, X_test, y_train, y_test)
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
     print(classification_report(y_test, prediction))
