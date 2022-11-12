@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 from KNN import optimal_k
-from KNN import f1_score_plot
+from score_plot import score_plot
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -34,19 +34,6 @@ def knn_algo(X_train, X_test, y_train, y_test):
     return pred
 
 
-def f1_plot(x_train, x_test, y_train, y_test):
-    x_plot = np.arange(1, int(math.sqrt(len(y_test))) + 1).tolist()
-    y_plot = []
-    for i in range(int(math.sqrt(len(y_test)))):
-        classifier = KNeighborsClassifier(n_neighbors=i + 1)
-        classifier.fit(x_train, y_train)
-        y_pred = classifier.predict(x_test)
-        y_plot.append(f1_score(y_test, y_pred, average='micro'))
-    plt.plot(x_plot, y_plot)
-    plt.grid()
-    plt.show()
-
-
 def main():
     dataframe = readlogFile("tailored_logs/T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
     format_columns_preprocessing(dataframe)
@@ -60,7 +47,7 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, y_test)
     optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
-    f1_plot(X_train, X_test, y_train, y_test)
+    score_plot(X_train, X_test, y_train, y_test)
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
     print(classification_report(y_test, prediction))
