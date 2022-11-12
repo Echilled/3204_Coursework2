@@ -9,8 +9,8 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
-from KNN import optimal_k
-from KNN import score_plot
+import optimal_k
+import score_plot
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -35,7 +35,7 @@ def knn_algo(X_train, X_test, y_train, y_test):
 
 
 def main():
-    dataframe = readlogFile("tailored_logs/T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
+    dataframe = readlogFile("tailored_logs/conbined_t1595_t1046.csv")
     format_columns_preprocessing(dataframe)
 
     # Standardize variables using scaling

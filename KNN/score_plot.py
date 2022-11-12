@@ -30,6 +30,7 @@ def score_plot(x_train, x_test, y_train, y_test):  # main function
         y_plot_recall.append(recall_score(y_test, y_pred, average='micro'))
 
 
+
     plt.plot(x_plot, y_plot_f1, label='f1 score')
     plt.plot(x_plot, y_plot_precision, label='precision score')
     plt.plot(x_plot, y_plot_recall, label='recall score')
