@@ -1,7 +1,7 @@
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 import numpy as np
-from KNN import knn_eugene
+import knn_eugene
 
 
 def optimal_k_plot(X_train, X_test, y_train, y_test):

@@ -10,16 +10,18 @@ from sklearn.metrics import recall_score
 
 from statistics import mode
 
+import math 
+
 import matplotlib.pyplot as plt
 # Importing data to a pandas DataFrame
 
 
 def score_plot(x_train, x_test, y_train, y_test):  # main function
 
-    x_plot = np.arange(1, int((len(y_test)))+1).tolist()
+    x_plot = np.arange(1, int(math.sqrt(len(y_test)))+1).tolist()
     y_plot_f1, y_plot_precision, y_plot_recall = [], [], []
 
-    for i in range(int((len(y_test)))):
+    for i in range(int(math.sqrt(len(y_test)))):
         classifier = KNeighborsClassifier(n_neighbors=i+1, p=2, metric='euclidean')
         classifier.fit(x_train, y_train)
 
@@ -35,6 +37,7 @@ def score_plot(x_train, x_test, y_train, y_test):  # main function
     plt.plot(x_plot, y_plot_precision, label='precision score')
     plt.plot(x_plot, y_plot_recall, label='recall score')
     plt.legend()
+    plt.title('Accuracy rate of different K values')
     plt.grid()
     plt.show()
 
