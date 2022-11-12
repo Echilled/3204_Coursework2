@@ -25,9 +25,9 @@ def score_plot(x_train, x_test, y_train, y_test):  # main function
 
         y_pred = classifier.predict(x_test)
 
-        y_plot_f1.append(f1_score(y_test, y_pred, pos_label='T1595'))
-        y_plot_precision.append(precision_score(y_test, y_pred, pos_label='T1595'))
-        y_plot_recall.append(recall_score(y_test, y_pred, pos_label='T1595'))
+        y_plot_f1.append(f1_score(y_test, y_pred, average='micro'))
+        y_plot_precision.append(precision_score(y_test, y_pred, average='micro'))
+        y_plot_recall.append(recall_score(y_test, y_pred, average='micro'))
 
 
     plt.plot(x_plot, y_plot_f1, label='f1 score')

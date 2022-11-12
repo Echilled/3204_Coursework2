@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 from KNN import optimal_k
-from score_plot import score_plot
+from KNN import score_plot
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -47,7 +47,7 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, y_test)
     optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
-    score_plot(X_train, X_test, y_train, y_test)
+    score_plot.score_plot(X_train, X_test, y_train, y_test)
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
     print(classification_report(y_test, prediction))
