@@ -43,6 +43,7 @@ def main():
     scaler.fit(dataframe.drop('Technique', axis=1))
     scaled_features = scaler.transform(dataframe.drop('Technique', axis=1))
 
+    non_scaled = dataframe.iloc[:, 1:-2]
     # Training of test split data, testing size is 30 percent
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
     prediction = knn_algo(X_train, X_test, y_train, score_plot.score_plot(X_train, X_test, y_train, y_test))
@@ -50,8 +51,14 @@ def main():
     
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
-    print(classification_report(y_test, prediction))
+    print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
 
+    X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30)
+    prediction = knn_algo(X_train, X_test, y_train, score_plot.score_plot(X_train, X_test, y_train, y_test))
+    optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
+
+    print(confusion_matrix(y_test, prediction))
+    print(f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
 
 if __name__ == "__main__":
     main()

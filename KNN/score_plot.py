@@ -46,5 +46,5 @@ def score_plot(x_train, x_test, y_train, y_test):  # main function
     c = y_plot_recall.index(max(y_plot_recall))
 
     optimal_k = mode([a, b, c]) + 1
-    print(optimal_k)
+    print(f"K value used: {optimal_k}")
     return optimal_k
