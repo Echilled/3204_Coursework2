@@ -1,4 +1,4 @@
-@timestamp,,agent.hostname,source.ip,source.port,destination.ip,destination.port,network.transport,network.packets,destination.bytes,source.bytes,bytes_in,bytes_out,Mitre Technique
+@timestamp,,agent.hostname,source.ip,source.port,destination.ip,destination.port,network.transport,network.packets,destination.bytes,source.bytes,bytes_in,bytes_out,Technique
 "Oct 24, 2022 @ 13:26:30.002",,dbserver,10.0.0.20,60008,10.0.0.21,0,-,2,56B,76B,-,-,T1046
 "Oct 24, 2022 @ 13:26:30.002",,webserver,10.0.0.20,60008,10.0.0.21,0,-,2,56B,76B,-,-,T1046
 "Oct 24, 2022 @ 13:26:30.002",,webserver,10.0.0.20,42848,10.0.0.21,1,-,2,56B,76B,-,-,T1046

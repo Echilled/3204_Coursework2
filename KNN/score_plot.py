@@ -41,10 +41,16 @@ def score_plot(x_train, x_test, y_train, y_test):  # main function
     plt.grid()
     plt.show()
 
-    a = y_plot_f1.index(max(y_plot_f1))
-    b = y_plot_precision.index(max(y_plot_precision))
-    c = y_plot_recall.index(max(y_plot_recall))
+    a = [i for i, x in enumerate(y_plot_f1) if x == max(y_plot_f1)]
+    b = [i for i, x in enumerate(y_plot_precision) if x == max(y_plot_precision)]
+    c = [i for i, x in enumerate(y_plot_recall) if x == max(y_plot_recall)]
 
-    optimal_k = mode([a, b, c]) + 1
+    mean = mode([a[-1], b[-1], c[-1]]) + 1
+    if mean == 1:
+        mean = 3
+    if mean % 2 == 0:
+        mean += 1
+    optimal_k = mean
     print(f"K value used: {optimal_k}")
+    
     return optimal_k
