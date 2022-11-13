@@ -27,8 +27,8 @@ def format_columns_preprocessing(dataframe):
             dataframe[column] = le.fit_transform(dataframe[column])
 
 
-def knn_algo(X_train, X_test, y_train, y_test):
-    knn = KNeighborsClassifier(n_neighbors=5)
+def knn_algo(X_train, X_test, y_train, k_value):
+    knn = KNeighborsClassifier(n_neighbors=k_value)
     knn.fit(X_train, y_train)
     pred = knn.predict(X_test)
     return pred
@@ -45,9 +45,9 @@ def main():
 
     # Training of test split data, testing size is 30 percent
     X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
-    prediction = knn_algo(X_train, X_test, y_train, y_test)
+    prediction = knn_algo(X_train, X_test, y_train, score_plot.score_plot(X_train, X_test, y_train, y_test))
     optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test)
-    score_plot.score_plot(X_train, X_test, y_train, y_test)
+    
     # Evaluate model
     print(confusion_matrix(y_test, prediction))
     print(classification_report(y_test, prediction))
