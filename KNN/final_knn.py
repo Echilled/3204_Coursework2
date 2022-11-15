@@ -42,7 +42,7 @@ def real_time_processing(csv):
     return realtimeX_test
 
 
-def main():
+def main(k=None):
     dataframe = readlogFile(
         "..\Consistent_logs\conbined_t1595_t1046.csv")
     dataframe = shuffle(dataframe)
@@ -58,7 +58,7 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(
         scaled_features, dataframe['Technique'], test_size=0.30)
     samples = dataframe['Technique']
-    opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples)
+    opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples) if k is None else k
     knn = KNeighborsClassifier(n_neighbors=opt_k)
     knn_train(knn, X_train, y_train)
     # realtime_test = real_time_processing('..\Consistent_logs\conbined_t1595_t1046.csv')
@@ -71,7 +71,7 @@ def main():
     # Evaluate model non scaled version
     X_train, X_test, y_train, y_test = train_test_split(
         non_scaled, dataframe['Technique'], test_size=0.30)
-    opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples)
+    opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples) if k is None else k
     knn = KNeighborsClassifier(n_neighbors=opt_k)
     knn_train(knn, X_train, y_train)
     prediction = knn_predict(knn, X_test)
@@ -82,4 +82,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    k = input("Enter K value (return key to calculate optimal k value): ")
+    if k.isnumeric():
+        main(int(k))
+    else:
+        print("Running program with optimal k value")
+        main()
