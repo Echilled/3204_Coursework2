@@ -49,7 +49,7 @@ def real_time_processing(csv):
 
 
 def main():
-    dataframe = readlogFile("..\Consistent_logs\conbined_t1595_t1046.csv")
+    dataframe = readlogFile("..\Consistent_logs\T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
     dataframe = shuffle(dataframe)
     format_columns_preprocessing(dataframe)
     # Standardize variables using scaling
@@ -70,17 +70,18 @@ def main():
     # prediction = knn_algo(X_train, X_test, y_train, opt_k)
 
     # Evaluate model
-    # print(confusion_matrix(y_test, prediction))
+    print(f"K value used: {opt_k}")
     print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
 
-    # X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30)
-    # opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples)
-    # knn = KNeighborsClassifier(n_neighbors=opt_k)
-    # knn_train(knn, X_train, y_train)
-    # prediction = knn_predict(knn, X_test)
+    X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30)
+    opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples)
+    knn = KNeighborsClassifier(n_neighbors=opt_k)
+    knn_train(knn, X_train, y_train)
+    prediction = knn_predict(knn, X_test)
 
     # print(confusion_matrix(y_test, prediction))
-    # print(f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
+    print(f"K value used: {opt_k}")
+    print(f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
 
 
 if __name__ == "__main__":
