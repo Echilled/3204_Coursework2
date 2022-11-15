@@ -9,6 +9,7 @@ import math
 
 from statistics import median
 
+
 def optimal_k_plot(X_train, X_test, y_train, y_test, samples):
     error_rate = []
     for i in range(1, int(math.sqrt(len(samples))) + 1):
