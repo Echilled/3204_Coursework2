@@ -64,8 +64,8 @@ def main():
     opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples)
     knn = KNeighborsClassifier(n_neighbors=opt_k)
     knn_train(knn, X_train, y_train)
-    realtime_test = real_time_processing('..\Consistent_logs\conbined_t1595_t1046.csv')
-    prediction = knn_predict(knn, realtime_test)
+    # realtime_test = real_time_processing('..\Consistent_logs\conbined_t1595_t1046.csv')
+    prediction = knn_predict(knn, X_test)
 
     # prediction = knn_algo(X_train, X_test, y_train, opt_k)
 
