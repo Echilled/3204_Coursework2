@@ -12,6 +12,7 @@ from statistics import median
 
 k_counter = 1
 
+
 def optimal_k_plot(X_train, X_test, y_train, y_test, samples):
     error_rate = []
     for i in range(1, int(math.sqrt(len(samples))) + 1):
@@ -35,9 +36,10 @@ def compare_k(X_train, X_test, y_train, y_test, error_rate):
     global k_counter
     _f1, _precision, _recall, _accuracy = [], [], [], []
 
-    low_error = [i for i, x in enumerate(error_rate) if x == min(error_rate)]
-    for i in range(len(low_error)):
-        classifier = KNeighborsClassifier(n_neighbors=i+1, p=2, metric='euclidean')
+    low_error = [i for i, x in enumerate(error_rate) if x == min(error_rate)]  # populate list with index of k value where error rate is the lowest
+    for i in low_error:
+        classifier = KNeighborsClassifier(
+            n_neighbors=i+1, p=2, metric='euclidean')
         classifier.fit(X_train, y_train)
 
         y_pred = classifier.predict(X_test)
@@ -47,6 +49,7 @@ def compare_k(X_train, X_test, y_train, y_test, error_rate):
         _recall.append(recall_score(y_test, y_pred, average='micro'))
         _accuracy.append(accuracy_score(y_test, y_pred))
 
+    # populate lists with index of k value where scores are the highest
     a = [i+k_counter for i, x in enumerate(_f1) if x == max(_f1)]
     b = [i+k_counter for i, x in enumerate(_precision) if x == max(_precision)]
     c = [i+k_counter for i, x in enumerate(_recall) if x == max(_recall)]
@@ -55,18 +58,13 @@ def compare_k(X_train, X_test, y_train, y_test, error_rate):
     res = a + b + c + d
     res.sort()
     k_counter += len(low_error)
-    _median = int(median(res))
-    if _median == 1:
-        _median = [x for i, x in enumerate(error_rate) if i not in low_error if i >= len(low_error)]
-        _median = len(low_error) + compare_k(X_train, X_test, y_train, y_test, _median)
+    _median = int(median(res))  # get the median k value out of 4 comparison results
+    if _median == 1:  # if k value is too low e.g., 1 (too much noise), recalculate next best k value
+        _median = [x for i, x in enumerate(
+            error_rate) if i not in low_error if i >= len(low_error)]
+        _median = len(low_error) + compare_k(X_train,
+                                             X_test, y_train, y_test, _median)
     if _median % 2 == 0:
         _median += 1
     optimal_k = _median
     return optimal_k
-
-def main():
-    print('hi')
-
-
-if __name__ == "__main__":
-    main()
