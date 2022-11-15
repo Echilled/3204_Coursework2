@@ -27,6 +27,7 @@ def optimal_k_plot(X_train, X_test, y_train, y_test, samples):
 
     return compare_k(X_train, X_test, y_train, y_test, error_rate)
 
+
 def compare_k(X_train, X_test, y_train, y_test, error_rate):  # main function
     y_plot_f1, y_plot_precision, y_plot_recall, y_plot_accuracy = [], [], [], []
 
@@ -43,7 +44,6 @@ def compare_k(X_train, X_test, y_train, y_test, error_rate):  # main function
         y_plot_recall.append(recall_score(y_test, y_pred, average='micro'))
         y_plot_accuracy.append(accuracy_score(y_test, y_pred))
 
-
     a = [i+1 for i, x in enumerate(y_plot_f1) if x == max(y_plot_f1)]
     b = [i+1 for i, x in enumerate(y_plot_precision) if x == max(y_plot_precision)]
     c = [i+1 for i, x in enumerate(y_plot_recall) if x == max(y_plot_recall)]
@@ -59,7 +59,6 @@ def compare_k(X_train, X_test, y_train, y_test, error_rate):  # main function
         med += 1
     optimal_k = med
     print(f"K value used: {optimal_k}")
-    
     return optimal_k
 
 def main():
