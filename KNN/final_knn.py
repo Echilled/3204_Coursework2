@@ -23,18 +23,17 @@ def check_int(value):
 
 def format_columns_preprocessing(dataframe):
     trunc_columns = ['source.packets', 'source.bytes', 'destination.packets', 'destination.bytes', 'network.packets', 'network.bytes', 'event.duration']
-    # le = preprocessing.LabelEncoder()
     dataframe = dataframe.replace(to_replace = '[(K?B),]', value = '', regex=True)
     dataframe = dataframe.replace('-', 0)
     for column in trunc_columns:
+        dataframe[column] = dataframe.get(column, 0)  # Add column and fill it with zeroes if it does not exist
         dataframe[column] = dataframe[column].apply(check_int)
         dataframe[column] = dataframe[column].astype(np.number)
+            
     dataframe = dataframe.fillna(0)
     result = dataframe['Technique']
     dataframe = pd.concat([dataframe[trunc_columns], result], axis=1)
-    # for column in dataframe.columns:
-        # if column != 'Technique':
-        #     dataframe[column] = le.fit_transform(dataframe[column])
+
     return dataframe
 
 
@@ -66,7 +65,7 @@ def real_time_processing(csv, scaling=True):
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046.csv")
+    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046_t1048.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)    
     # Standardize variables using scaling
