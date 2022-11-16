@@ -66,7 +66,7 @@ def real_time_processing(csv, scaling=True):
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\conbined_t1595_t1046.csv")
+    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)    
     # Standardize variables using scaling
