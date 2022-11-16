@@ -1,4 +1,4 @@
-
+from collections import Counter
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -8,6 +8,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.utils import shuffle
 import optimal_k
+import matplotlib.pyplot as plt
 
 def readlogFile(file):
     df = pd.read_csv(file)
@@ -87,6 +88,14 @@ def main(k=None, realtime=None):
         X_test = realtime_test
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
+        pred_results = Counter(list(prediction.flatten()))
+        att_type = list(pred_results.keys())
+        att_count = list(pred_results.values())
+        plt.bar(att_type, att_count)
+        plt.xlabel("Attack Techniques")
+        plt.ylabel("Count")
+        plt.title("Attack Techniques detected: Scaled")
+        plt.show()
     else:
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
@@ -102,6 +111,14 @@ def main(k=None, realtime=None):
         X_test = realtime_test
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
+        pred_results = Counter(list(prediction.flatten()))
+        att_type = list(pred_results.keys())
+        att_count = list(pred_results.values())
+        plt.bar(att_type, att_count)
+        plt.xlabel("Attack Techniques")
+        plt.ylabel("Count")
+        plt.title("Attack Techniques detected: Non-scaled")
+        plt.show()
     else:
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
