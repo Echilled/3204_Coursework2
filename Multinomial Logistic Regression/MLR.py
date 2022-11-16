@@ -222,7 +222,7 @@ updatedWeights, updatedBiases, loss_list = stochGradDes(0.1, 2000, train_target,
                                                         weights, biases, target_k)
 testProbabilities, testPredictions = multinomialLogReg(test_features, updatedWeights, updatedBiases, target_k)
 
-print("===== Classification Report =====")
+print("\n===== Classification Report =====")
 print(classification_report(test_target, target_pred))
 
 confusion_matrix = confusion_matrix(test_target, target_pred)
