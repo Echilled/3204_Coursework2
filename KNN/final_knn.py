@@ -1,24 +1,40 @@
 
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.utils import shuffle
 import optimal_k
-
 
 def readlogFile(file):
     df = pd.read_csv(file)
     return df
 
+def check_int(value):
+    try:
+        int(value)
+        return value
+    except ValueError:
+        return np.NaN
 
 def format_columns_preprocessing(dataframe):
-    le = preprocessing.LabelEncoder()
-    for column in dataframe.columns:
-        if column != 'Technique':
-            dataframe[column] = le.fit_transform(dataframe[column])
+    trunc_columns = ['source.packets', 'source.bytes', 'destination.packets', 'destination.bytes', 'network.packets', 'network.bytes', 'event.duration']
+    # le = preprocessing.LabelEncoder()
+    dataframe = dataframe.replace(to_replace = '[(K?B),]', value = '', regex=True)
+    dataframe = dataframe.replace('-', 0)
+    for column in trunc_columns:
+        dataframe[column] = dataframe[column].apply(check_int)
+        dataframe[column] = dataframe[column].astype(np.number)
+    dataframe = dataframe.fillna(0)
+    result = dataframe['Technique']
+    dataframe = pd.concat([dataframe[trunc_columns], result], axis=1)
+    # for column in dataframe.columns:
+        # if column != 'Technique':
+        #     dataframe[column] = le.fit_transform(dataframe[column])
+    return dataframe
 
 
 def knn_train(knn, X_train, y_train):
@@ -32,7 +48,7 @@ def knn_predict(knn, X_test):
 
 def real_time_processing(csv, scaling=True):
     df = readlogFile(csv)
-    format_columns_preprocessing(df)
+    df = format_columns_preprocessing(df)
     if scaling is True:
         scaler = StandardScaler()
         scaler.fit(df.drop('Technique', axis=1))
@@ -51,7 +67,7 @@ def main(k=None, realtime=None):
     global logs_source
     dataframe = readlogFile("..\Consistent_logs\conbined_t1595_t1046.csv")
     dataframe = shuffle(dataframe)
-    format_columns_preprocessing(dataframe)
+    dataframe = format_columns_preprocessing(dataframe)    
     # Standardize variables using scaling
     scaler = StandardScaler()
     scaler.fit(dataframe.drop('Technique', axis=1))
@@ -69,9 +85,12 @@ def main(k=None, realtime=None):
         logs_source = input("Enter log file for real time testing:")
         realtime_test = real_time_processing(logs_source)
         X_test = realtime_test
-    prediction = knn_predict(knn, X_test)
-    print(f"K value used: {opt_k}")
-    print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
+        prediction = knn_predict(knn, X_test)
+        print(f"K value used: {opt_k}")
+    else:
+        prediction = knn_predict(knn, X_test)
+        print(f"K value used: {opt_k}")
+        print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
 
     # Evaluate model non scaled version
     X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30)
@@ -81,10 +100,12 @@ def main(k=None, realtime=None):
     if realtime == 'Y':
         realtime_test = real_time_processing(logs_source, scaling=False)
         X_test = realtime_test
-    prediction = knn_predict(knn, X_test)
-    print(f"K value used: {opt_k}")
-    print(
-        f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
+        prediction = knn_predict(knn, X_test)
+        print(f"K value used: {opt_k}")
+    else:
+        prediction = knn_predict(knn, X_test)
+        print(f"K value used: {opt_k}")
+        print(f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
 
 
 if __name__ == "__main__":
