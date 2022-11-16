@@ -2,10 +2,9 @@ from collections import Counter
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.utils import shuffle
 import optimal_k
 import matplotlib.pyplot as plt
@@ -53,19 +52,19 @@ def real_time_processing(csv, scaling=True):
         scaler = StandardScaler()
         scaler.fit(df.drop('Technique', axis=1))
         scaled_features = scaler.transform(df.drop('Technique', axis=1))
-        X_train, X_test, y_train, y_test = train_test_split(scaled_features, df['Technique'], test_size=0.3)
+        X_train, X_test, y_train, y_test = train_test_split(scaled_features, df['Technique'], test_size=0.3, random_state=42)
         realtimeX_test = X_test
         return realtimeX_test
     elif scaling is False:
         non_scaled = df.iloc[:, 1:-2]
-        X_train, X_test, y_train, y_test = train_test_split(non_scaled, df['Technique'], test_size=0.30)
+        X_train, X_test, y_train, y_test = train_test_split(non_scaled, df['Technique'], test_size=0.30, random_state=42)
         realtimeX_test = X_test
         return realtimeX_test
 
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046_t1048.csv")
+    dataframe = readlogFile("..\Consistent_logs\T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)    
     # Standardize variables using scaling
@@ -76,7 +75,7 @@ def main(k=None, realtime=None):
     non_scaled = dataframe.iloc[:, 1:-2]
     # Training of test split data, testing size is 30 percent
     # Evaluate model scaled version
-    X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30)
+    X_train, X_test, y_train, y_test = train_test_split(scaled_features, dataframe['Technique'], test_size=0.30, random_state=42)
     samples = dataframe['Technique']
     opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples) if k is None else k
     knn = KNeighborsClassifier(n_neighbors=opt_k)
@@ -101,7 +100,7 @@ def main(k=None, realtime=None):
         print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
 
     # Evaluate model non scaled version
-    X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30)
+    X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30, random_state=42)
     opt_k = optimal_k.optimal_k_plot(X_train, X_test, y_train, y_test, samples) if k is None else k
     knn = KNeighborsClassifier(n_neighbors=opt_k)
     knn_train(knn, X_train, y_train)
