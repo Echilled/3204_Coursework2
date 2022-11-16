@@ -21,7 +21,7 @@ def train_using_gini(data):
     X = data[feature_cols]
     y = data.Technique
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     clf = DecisionTreeClassifier(criterion="gini")
     clf = clf.fit(X_train, y_train)
     y_predict = clf.predict(X_test)
