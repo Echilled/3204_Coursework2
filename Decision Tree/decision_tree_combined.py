@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
-
+from sklearn.metrics import confusion_matrix
 
 def importdata():
     data = pd.read_csv("combined_t1595_t1046.csv")
@@ -27,8 +27,9 @@ def train_using_gini(data):
     y_predict = clf.predict(X_test)
     target_names = ['T1046', 'T1595']
     result = classification_report(y_test, y_predict, target_names=target_names)
-
-    return result
+    matrix = confusion_matrix(y_test, y_predict)
+    report = [result, matrix]
+    return report
 
 
 # Function to perform training with entropy.
@@ -44,8 +45,10 @@ def train_using_entropy(data):
     y_predict = clf.predict(X_test)
     target_names = ['T1046','T1595']
     result = classification_report(y_test, y_predict, target_names = target_names)
+    matrix = confusion_matrix(y_test, y_predict)
+    report = [result, matrix]
 
-    return result
+    return report
 
 # Driver code
 def main():
@@ -56,9 +59,13 @@ def main():
 
     clf_entropy = train_using_entropy(data)
     print("Results Using Entropy:")
-    print (clf_entropy)
-    print("Results Using Gini Index:")
-    print (clf_gini)
+    print(clf_entropy[0])
+    print("Confusion matrix:")
+    print(clf_entropy[1])
+    print("\nResults Using Gini Index:")
+    print(clf_gini[0])
+    print("Confusion matrix:")
+    print(clf_gini[1])
 
 
 # Calling main function
