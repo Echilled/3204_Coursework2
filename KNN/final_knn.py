@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, multilabel_confusion_matrix
 from sklearn.utils import shuffle
 import optimal_k
 import matplotlib.pyplot as plt
@@ -64,7 +64,7 @@ def real_time_processing(csv, scaling=True):
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\T1595-T1570-T1020_Packetbeat_raw_Gp16_SimYewSiangMerrill-SimKaiChing-RachelWongSiHui-YeoHanJordan.csv")
+    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046_t1048.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)    
     # Standardize variables using scaling
@@ -98,6 +98,7 @@ def main(k=None, realtime=None):
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
         print(f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
+        print(f"Confusion matrix:\n{multilabel_confusion_matrix(y_test, prediction)}")
 
     # Evaluate model non scaled version
     X_train, X_test, y_train, y_test = train_test_split(non_scaled, dataframe['Technique'], test_size=0.30, random_state=42)
@@ -121,14 +122,16 @@ def main(k=None, realtime=None):
         prediction = knn_predict(knn, X_test)
         print(f"K value used: {opt_k}")
         print(f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
+        print(f"Confusion matrix:\n{multilabel_confusion_matrix(y_test, prediction)}")
+
 
 
 if __name__ == "__main__":
     realtime = input("Running Real time? Default No (Y/N):")
     k = input("Enter K value (return key to calculate optimal k value): ")
-    if realtime == 'Y' and k.isnumeric():
+    if realtime.upper() == 'Y' and k.isnumeric():
         main(int(k), 'Y')
-    elif k.isnumeric() and realtime != 'Y':
+    elif k.isnumeric() and realtime.upper() != 'Y':
         main(int(k))
     elif realtime == 'Y':
         main(None, 'Y')
