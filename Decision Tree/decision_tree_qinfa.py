@@ -1,17 +1,28 @@
 import pandas as pd
+import numpy as np
+from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 def importdata():
-    data = pd.read_csv("combined_t1595_t1046.csv")
+    data = pd.read_csv("combined_qinfa.csv")
 
     print("Dataset Length: ", len(data))
     print("Dataset Shape: ", data.shape)
 
     # Printing the dataset obseravtions
     print("Dataset: ", data.head())
+
+    data.replace({'-' : np.nan}, inplace=True)
+
+    le = preprocessing.LabelEncoder()
+
+    for col in data.columns:
+        data[col] = le.fit_transform(data[col])
+        data[col].replace({np.nan: data[col].median()}, inplace = True)
+
     return data
 
 
