@@ -24,7 +24,7 @@ def check_int(value):
         return np.NaN
 
 
-def check_valid_ip(value):
+def check_valid_string(value):
     try:
         int(value)
         return np.NaN
@@ -46,7 +46,7 @@ def format_columns_preprocessing(dataframe):
         dataframe[column] = dataframe[column].astype(np.number)
     for column in machine_properties:
         dataframe[column] = dataframe.get(column, '')
-        dataframe[column] = dataframe[column].apply(check_valid_ip)
+        dataframe[column] = dataframe[column].apply(check_valid_string)
         dataframe[column] = le.fit_transform(dataframe[column])
 
 
@@ -89,7 +89,7 @@ def real_time_processing(csv, scaling=True):
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1570_t1020.csv")
+    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046_t1048.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)
     # Standardize variables using scaling
