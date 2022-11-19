@@ -15,7 +15,7 @@ np.seterr(divide='ignore', invalid='ignore')
 warnings.filterwarnings("ignore")
 
 # Reading of dataset file
-data = pd.read_csv('Dataset 1.csv', header=0)
+data = pd.read_csv('Main_Dataset.csv', header=0)
 data = data.dropna()
 
 # Data Preprocessing
@@ -77,3 +77,17 @@ print(classification_report(test_target, target_pred))
 print("===== Confusion Matrix =====")
 confusion_matrix = confusion_matrix(test_target, target_pred)
 print(confusion_matrix)
+
+# plotting the Confusion Matrix
+fig, ax = plt.subplots(figsize=(8, 8))
+ax.imshow(confusion_matrix)
+ax.grid(False)
+ax.set_xlabel('Predicted outputs', fontsize=14, color='black')
+ax.set_ylabel('Actual outputs', fontsize=14, color='black')
+ax.xaxis.set(ticks=(0, 1), ticklabels=('Predicted 0s', 'Predicted 1s'))
+ax.yaxis.set(ticks=(0, 1), ticklabels=('Actual 0s', 'Actual 1s'))
+ax.set_ylim(1.5, -0.5)
+for i in range(2):
+    for j in range(2):
+        ax.text(j, i, confusion_matrix[i, j], ha='center', va='center', color='white')
+plt.savefig('Confusion Matrix Diagram.png')
