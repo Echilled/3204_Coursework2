@@ -78,7 +78,7 @@ t_logreg.fit(test_features, test_target)
 print('Model Accuracy on test dataset: \n\t> ' + str(t_logreg.score(test_features, test_target) * 100))
 
 
-print("\n===== Classification Report =====")
+print("\n===== Classification Report on Test Dataset =====")
 target_pred = t_logreg.predict(test_features)
 print(classification_report(test_target, target_pred))
 
