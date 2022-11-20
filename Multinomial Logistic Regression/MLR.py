@@ -3,10 +3,9 @@ import numpy as np
 from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from mlxtend.plotting import plot_confusion_matrix
 import warnings
 
 
@@ -35,7 +34,6 @@ features = data[list(data.columns)]
 features.drop('Technique', inplace=True, axis=1)
 target = data['Technique']
 # print(features.shape, len(target))  # shape of feature matrix and target vector
-
 
 # Before Scaling Model Accuracy
 initial_logreg = LogisticRegression(multi_class='multinomial', solver='sag')
@@ -88,8 +86,20 @@ confusion_matrix = confusion_matrix(test_target, target_pred)
 print(confusion_matrix)
 
 # plotting the Confusion Matrix
-fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix, figsize=(8, 8), cmap=plt.cm.Blues)
-plt.xlabel('Predictions', fontsize=18)
-plt.ylabel('Actuals', fontsize=18)
-plt.title('Confusion Matrix', fontsize=18)
+# fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix, figsize=(8, 8), cmap=plt.cm.Blues)
+# plt.xlabel('Predicted Label', fontsize=18)
+# plt.ylabel('True Label', fontsize=18)
+# plt.title('Confusion Matrix', fontsize=18)
+# plt.savefig('Confusion Matrix Diagram.png')
+
+
+target_list = target.unique()
+disp = ConfusionMatrixDisplay.from_predictions(
+    test_target,
+    target_pred,
+    display_labels=target_list,
+    cmap=plt.cm.Blues,
+)
+disp.ax_.set_title("Confusion Matrix")
 plt.savefig('Confusion Matrix Diagram.png')
+plt.show()
