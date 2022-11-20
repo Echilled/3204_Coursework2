@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report, multilabel_confusion_matrix
+from sklearn.metrics import classification_report, multilabel_confusion_matrix, ConfusionMatrixDisplay
 from sklearn.utils import shuffle
 import optimal_k
 import matplotlib.pyplot as plt
@@ -89,7 +89,7 @@ def real_time_processing(csv, scaling=True):
 
 def main(k=None, realtime=None):
     global logs_source
-    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1046_t1048.csv")
+    dataframe = readlogFile("..\Consistent_logs\combined_t1595_t1570_t1020.csv")
     dataframe = shuffle(dataframe)
     dataframe = format_columns_preprocessing(dataframe)
     # Standardize variables using scaling
@@ -128,6 +128,15 @@ def main(k=None, realtime=None):
             f"Classification report for scaled input:\n{classification_report(y_test, prediction)}")
         print(
             f"Confusion matrix:\n{multilabel_confusion_matrix(y_test, prediction)}")
+        disp = ConfusionMatrixDisplay.from_predictions(
+            y_test,
+            prediction,
+            display_labels=dataframe['Technique'].unique(),
+            cmap=plt.cm.Blues
+        )
+        disp.ax_.set_title("Confusion Matrix")
+        plt.savefig('Confusion Matrix.png')
+        plt.show()
 
     # Evaluate model non scaled version
     X_train, X_test, y_train, y_test = train_test_split(
@@ -156,6 +165,15 @@ def main(k=None, realtime=None):
             f"Classicaition report for non-scaled input:\n{classification_report(y_test, prediction)}")
         print(
             f"Confusion matrix:\n{multilabel_confusion_matrix(y_test, prediction)}")
+        disp = ConfusionMatrixDisplay.from_predictions(
+            y_test,
+            prediction,
+            display_labels=dataframe['Technique'].unique(),
+            cmap=plt.cm.Blues
+        )
+        disp.ax_.set_title("Confusion Matrix")
+        plt.savefig('Confusion Matrix.png')
+        plt.show()
 
 
 if __name__ == "__main__":
