@@ -13,7 +13,7 @@ np.seterr(divide='ignore', invalid='ignore')
 warnings.filterwarnings("ignore")
 
 # Reading of dataset file
-data = pd.read_csv('Dataset 2.csv', header=0)
+data = pd.read_csv('combined_t1595_t1046.csv', header=0)
 data = data.dropna()
 
 # Data Preprocessing
@@ -82,7 +82,7 @@ print("\n===== Classification Report on Test Dataset =====")
 target_pred = t_logreg.predict(test_features)
 print(classification_report(test_target, target_pred))
 
-print("===== Confusion Matrix =====")
+print("===== Confusion Matrix on Test Dataset =====")
 confusion_matrix = confusion_matrix(test_target, target_pred)
 print(confusion_matrix)
 
