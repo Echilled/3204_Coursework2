@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from mlxtend.plotting import plot_confusion_matrix
 import warnings
 
-plt.rc("font", size=14)
+
 np.seterr(divide='ignore', invalid='ignore')
 warnings.filterwarnings("ignore")
 
@@ -45,10 +46,10 @@ print('Initial Model Accuracy: \n\t> ' + str(initial_logreg.score(features, targ
 # Performing Scaling on feature set
 scaler = StandardScaler()
 scaled_features = scaler.fit_transform(features)
-scaled_features = pd.DataFrame(scaled_features, columns=features.columns)
+scaled_features = pd.DataFrame(scaled_features, columns=features.columns)  # converting numpy array to pandas dataframe
 
 # Performing Feature Selection to remove redundant features
-logreg = LogisticRegression(multi_class='multinomial', solver='sag')
+logreg = LogisticRegression(multi_class='multinomial', penalty='l2', solver='sag')
 logreg.fit(scaled_features, target)
 coef = logreg.coef_[0]
 redundant_features = list(pd.Series(scaled_features.columns)[list(coef == 0)])
@@ -57,7 +58,7 @@ for col_name in redundant_features:
     n_scaled_features.drop(col_name, inplace=True, axis=1)
 
 # Calculation on accuracy of data with standard scaling and removal of redundant features
-logreg = LogisticRegression(multi_class='multinomial', solver='sag')
+logreg = LogisticRegression(multi_class='multinomial', penalty='l2', solver='sag')
 logreg.fit(scaled_features, target)
 print('Model Accuracy after standard scaling and removal of redundant features: \n\t> '
       + str(logreg.score(n_scaled_features, target) * 100))
@@ -73,7 +74,7 @@ print("Size of Testing Features:", test_features.shape)
 print("Size of Testing Targets:", test_target.shape)
 
 
-t_logreg = LogisticRegression(multi_class='multinomial', solver='sag')
+t_logreg = LogisticRegression(multi_class='multinomial', penalty='l2', solver='sag')
 t_logreg.fit(test_features, test_target)
 print('Model Accuracy on test dataset: \n\t> ' + str(t_logreg.score(test_features, test_target) * 100))
 
@@ -87,15 +88,8 @@ confusion_matrix = confusion_matrix(test_target, target_pred)
 print(confusion_matrix)
 
 # plotting the Confusion Matrix
-fig, ax = plt.subplots(figsize=(8, 8))
-ax.imshow(confusion_matrix)
-ax.grid(False)
-ax.set_xlabel('Predicted outputs', fontsize=14, color='black')
-ax.set_ylabel('Actual outputs', fontsize=14, color='black')
-ax.xaxis.set(ticks=(0, 1), ticklabels=('Predicted 0s', 'Predicted 1s'))
-ax.yaxis.set(ticks=(0, 1), ticklabels=('Actual 0s', 'Actual 1s'))
-ax.set_ylim(1.5, -0.5)
-for i in range(2):
-    for j in range(2):
-        ax.text(j, i, confusion_matrix[i, j], ha='center', va='center', color='white')
+fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix, figsize=(8, 8), cmap=plt.cm.Blues)
+plt.xlabel('Predictions', fontsize=18)
+plt.ylabel('Actuals', fontsize=18)
+plt.title('Confusion Matrix', fontsize=18)
 plt.savefig('Confusion Matrix Diagram.png')
