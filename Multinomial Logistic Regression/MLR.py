@@ -86,13 +86,6 @@ confusion_matrix = confusion_matrix(test_target, target_pred)
 print(confusion_matrix)
 
 # plotting the Confusion Matrix
-# fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix, figsize=(8, 8), cmap=plt.cm.Blues)
-# plt.xlabel('Predicted Label', fontsize=18)
-# plt.ylabel('True Label', fontsize=18)
-# plt.title('Confusion Matrix', fontsize=18)
-# plt.savefig('Confusion Matrix Diagram.png')
-
-
 target_list = target.unique()
 disp = ConfusionMatrixDisplay.from_predictions(
     test_target,
