@@ -7,3 +7,5 @@ Decision Tree 'Decision Tree'
 Log files in the folder: Consistent_logs
 
 Refer to user manual to run respoective scripts
+
+Remeber to 'pip install -r requirements.txt' to install required libraries
